@@ -107,7 +107,7 @@ export default {
       // 请求
       this.$store.dispatch('userModule/register', this.user).then(() => {
         // 跳转主页
-        this.$router.replace({ name: 'Home' });
+        this.$router.replace({ name: 'home' });
       }).catch((err) => {
         this.$bvToast.toast(err.response.data.msg, {
           title: '数据验证错误',

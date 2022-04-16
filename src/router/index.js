@@ -1,12 +1,14 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import store from '@/store';
 import HomeView from '../views/HomeView.vue';
+import userRoutes from './module/user';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'home',
     component: HomeView,
   },
@@ -18,25 +20,25 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue'),
   },
-<<<<<<< HEAD
-=======
-  {
-    path: '/register',
-    name: 'register',
-    component: () => import('../views/register/MyRegister.vue'),
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import('../views/login/MyLogin.vue'),
-  },
->>>>>>> 1864a36 (add register and login index)
+  ...userRoutes,
 ];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.auth) {
+    if (store.state.userModule.token) {
+      next();
+    } else {
+      router.push({ name: 'login' });
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;

@@ -43,9 +43,9 @@ const userModule = {
         });
       });
     },
-    login(context, { telephone, password }) {
+    login(context, { email, password }) {
       return new Promise((resolve, reject) => {
-        userService.login({ telephone, password }).then((res) => {
+        userService.login({ email, password }).then((res) => {
           // 保存token
           context.commit('SET_TOKEN', res.data.data.token);
           return userService.info();

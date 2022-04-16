@@ -14,7 +14,7 @@
               label="邮箱"
             >
               <b-form-input
-                v-model="user.eamil"
+                v-model="user.email"
                 type="text"
                 placeholder="输入您的邮箱"
               ></b-form-input>
@@ -49,11 +49,14 @@
   </div>
 </template>
 <script>
+
+import { mapActions } from 'vuex';
+
 export default {
   data() {
     return {
       user: {
-        eamil: '',
+        email: '',
         password: '',
       },
       televalidation: null,
@@ -61,12 +64,24 @@ export default {
     };
   },
   methods: {
+    ...mapActions('userModule', { userlogin: 'login' }),
     login() {
       if (this.user.password.length <= 6) {
         this.pwvalidation = false;
         return;
       }
       this.pwvalidation = true;
+      // 请求
+      this.userlogin(this.user).then(() => {
+        // 跳转主页
+        this.$router.replace({ name: 'home' });
+      }).catch((err) => {
+        this.$bvToast.toast(err.response.data.msg, {
+          title: '数据验证错误',
+          variant: 'danger',
+          solid: true,
+        });
+      });
       console.log('login');
     },
   },
