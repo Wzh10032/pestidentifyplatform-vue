@@ -22,7 +22,7 @@
               <template v-slot:button-content>
                 <em>{{userInfo.name}}</em>
               </template>
-              <b-dropdown-item @click="$router.replace({name: 'frofile'})">个人主页</b-dropdown-item>
+              <b-dropdown-item @click="$router.replace({name: 'profile'})">个人主页</b-dropdown-item>
               <b-dropdown-item @click="logout">退出登录</b-dropdown-item>
             </b-nav-item-dropdown>
             <div v-if="!userInfo">
