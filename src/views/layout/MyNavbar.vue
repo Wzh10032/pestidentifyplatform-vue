@@ -22,7 +22,8 @@
               <template v-slot:button-content>
                 <em>{{userInfo.name}}</em>
               </template>
-              <b-dropdown-item @click="$router.replace({name: 'profile'})">个人主页</b-dropdown-item>
+              <b-dropdown-item @click="$router.replace({name: 'about'})">上传害虫数据</b-dropdown-item>
+              <b-dropdown-item @click="$router.replace({name: 'profile'})">害虫分布地图</b-dropdown-item>
               <b-dropdown-item @click="logout">退出登录</b-dropdown-item>
             </b-nav-item-dropdown>
             <div v-if="!userInfo">
