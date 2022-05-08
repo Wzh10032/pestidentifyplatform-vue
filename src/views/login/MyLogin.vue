@@ -82,7 +82,7 @@ export default {
           solid: true,
         });
       });
-      console.log('login');
+      // console.log('login');
     },
   },
 };

@@ -1,5 +1,7 @@
 <template>
   <div class="container">
+    <!-- style="text-align:center;margin-top:8px;" -->
+    <h4 style="margin-top:8px;">害虫识别</h4>
     <div
       class="previewBlock"
       @click="chooseFile"
@@ -29,6 +31,18 @@
         type="submit"
         :disabled="busy"
       >裁剪后提交</b-button>
+      <div style="margin-top:10px;">
+        <a
+          href="http://124.221.199.135:10011"
+          target="_blank"
+        >
+          <b-button
+            block
+            @click="gotoBaidu"
+            variant="success"
+          >使用自研模型识别</b-button>
+        </a>
+      </div>
       <div
         v-if="isShowLoading === true"
         class="text-center"
@@ -95,7 +109,7 @@ import axios from 'axios';
           return {
             isShowLoading: false,
             busy: false,
-            filePreview: 'https://img1.baidu.com/it/u=585921100,858045908&fm=253&fmt=auto&app=138&f=JPG?w=500&h=500',
+            filePreview: 'https://pic.rmb.bdstatic.com/bjh/ed81ee20f0befcf8edbc31dd761c9da2.png',
             info:[{
               name: "NULL",
               score: "NULL",
@@ -227,7 +241,7 @@ import axios from 'axios';
   margin: 0 auto 20px;
   background-position: center center;
   background-size: cover;
-  margin-top: 30px;
+  margin-top: 8px;
 }
 .justify-content-center {
   margin: 20px;

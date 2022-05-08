@@ -115,7 +115,7 @@ export default {
           solid: true,
         });
       });
-      console.log('register');
+      // console.log('register');
     },
   },
 };

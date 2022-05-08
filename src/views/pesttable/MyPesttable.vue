@@ -2,7 +2,7 @@
   <div class="container">
     <b-row class="mt-5">
       <b-col>
-        <b-card title="当前有害生物数据库">
+        <b-card title="有害生物基础库">
           <b-table
             striped
             hover
