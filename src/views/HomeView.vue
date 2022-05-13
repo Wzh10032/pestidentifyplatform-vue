@@ -38,7 +38,6 @@
         >
           <b-button
             block
-            @click="gotoBaidu"
             variant="success"
           >使用自研模型识别</b-button>
         </a>
