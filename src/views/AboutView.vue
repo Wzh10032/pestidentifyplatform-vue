@@ -55,6 +55,11 @@
               v-model="name"
               placeholder="请输入害虫名"
             ></b-form-input>
+            <br>
+            <b-form-input
+              v-model="count"
+              placeholder="请输入害虫个数"
+            ></b-form-input>
           </b-form-group>
           <b-form-group>
             <b-button
@@ -75,6 +80,7 @@ export default {
     return{
       name:"",
       slide: 0,
+      count:"",
       sliding: null,
     }
   },
@@ -102,6 +108,7 @@ export default {
       params.append('lng', longitude)
       params.append('lat',latitude)
       params.append('name',this.name)
+      params.append('count',this.count)
       axios.post('http://81.69.185.195:8504/api/uploadlocation', params).then(function (response){
       }); 
     },

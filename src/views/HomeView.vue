@@ -1,61 +1,65 @@
 <template>
-  <div class="container">
-    <!-- style="text-align:center;margin-top:8px;" -->
-    <h4 style="margin-top:8px;">害虫识别</h4>
-    <div
-      class="previewBlock"
-      @click="chooseFile"
-      :style="{ 'background-image': `url(${filePreview})` }"
-    >
-    </div>
-    <b-input-group>
-      <b-input-group-prepend is-text>
-        <b-icon icon="image-fill"></b-icon>
-      </b-input-group-prepend>
-      <b-form-file
-        class="form-control form-control-lg"
-        ref="fileInput"
-        type="file"
-        @input="selectImgFile"
-        id="form-image"
-        :disabled="busy"
-        accept="image/*"
-      ></b-form-file>
-    </b-input-group>
-    <div class="justify-content-center">
-      <b-button
-        block
-        @click="$bvModal.show('bv-modal-example')"
-        variant="success"
-        ref="submit"
-        type="submit"
-        :disabled="busy"
-      >裁剪后提交</b-button>
-      <div style="margin-top:10px;">
-        <a
-          href="http://124.221.199.135:10011"
-          target="_blank"
-        >
+  <div>
+    <div id="shibie">
+      <h4 style="margin-top:8px;">害虫识别</h4>
+      <div
+        class="previewBlock"
+        @click="chooseFile"
+        :style="{ 'background-image': `url(${filePreview})` }"
+      >
+      </div>
+      <b-input-group>
+        <b-input-group-prepend is-text>
+          <b-icon icon="image-fill"></b-icon>
+        </b-input-group-prepend>
+        <b-form-file
+          class="form-control form-control-lg"
+          ref="fileInput"
+          type="file"
+          @input="selectImgFile"
+          id="form-image"
+          :disabled="busy"
+          accept="image/*"
+        ></b-form-file>
+      </b-input-group>
+      <div class="justify-content-center">
+        <b-button
+          block
+          @click="$bvModal.show('bv-modal-example1')"
+          variant="success"
+          ref="submit"
+          type="submit"
+          :disabled="busy"
+        >使用百度模型识别</b-button>
+        <div style="margin-top:10px;">
           <b-button
             block
+            @click="$bvModal.show('bv-modal-example2')"
             variant="success"
+            ref="submit"
+            type="submit"
+            :disabled="busy"
           >使用自研模型识别</b-button>
-        </a>
-      </div>
-      <div
-        v-if="isShowLoading === true"
-        class="text-center"
-        style="margin-top:30px;"
-      >
-        <b-spinner
-          variant="primary"
-          label="Spinning"
-        ></b-spinner>
-        <b>图片识别中</b>
+        </div>
+        <div
+          v-if="isShowLoading === true"
+          class="text-center"
+          style="margin-top:30px;"
+        >
+          <b-spinner
+            variant="primary"
+            label="Spinning"
+          ></b-spinner>
+          <b>图片识别中</b>
+        </div>
       </div>
     </div>
+
+    <!-- <div style="background:green;margin:20px 0px 0px 0px">
+      123
+    </div> -->
     <b-modal
-      id="bv-modal-example"
+      id="bv-modal-example1"
       hide-footer
       ref="modal-image"
     >
@@ -67,7 +71,7 @@
           <vue-cropper
             autoCrop
             :img="filePreview"
-            ref="cropper"
+            ref="cropper1"
             centerBox
           />
         </div>
@@ -76,7 +80,32 @@
         class="mt-3"
         variant="success"
         block
-        @click="getCropData()"
+        @click="getCropData1()"
+      >获取截图后的图片</b-button>
+    </b-modal>
+    <b-modal
+      id="bv-modal-example2"
+      hide-footer
+      ref="modal-image"
+    >
+      <template #modal-title>
+        图片裁剪
+      </template>
+      <div class="d-block text-center">
+        <div style="width:100%;height:500px">
+          <vue-cropper
+            autoCrop
+            :img="filePreview"
+            ref="cropper2"
+            centerBox
+          />
+        </div>
+      </div>
+      <b-button
+        class="mt-3"
+        variant="success"
+        block
+        @click="getCropData2()"
       >获取截图后的图片</b-button>
     </b-modal>
     <b-modal
@@ -97,6 +126,26 @@
         </b-table>
       </div>
     </b-modal>
+    <b-modal
+      ref="modal-info2"
+      scrollable
+      title="信息展示框"
+      size="xl"
+    >
+      <div>
+        <b-table
+          striped
+          hover
+          :items="info2"
+        >
+          <template #cell(wiki_url)="data">
+            <span v-html="data.value"></span>
+          </template>
+        </b-table>
+        <br>
+        耗时{{costtime}}ms
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -109,6 +158,7 @@ import axios from 'axios';
             isShowLoading: false,
             busy: false,
             filePreview: 'https://pic.rmb.bdstatic.com/bjh/ed81ee20f0befcf8edbc31dd761c9da2.png',
+            costtime:"",
             info:[{
               name: "NULL",
               score: "NULL",
@@ -126,7 +176,24 @@ import axios from 'axios';
               score: "NULL",
               baike_url: "NULL",
               description: "NULL",
-            }]
+            }],
+            info2:[{
+              name: "NULL",
+              wiki_url: "NULL",
+              score: "NULL",
+            },{
+              name: "NULL",
+              wiki_url: "NULL",
+              score: "NULL",
+            },{
+              name: "NULL",
+              wiki_url: "NULL",
+              score: "NULL",
+            },{
+              name: "NULL",
+              wiki_url: "NULL",
+              score: "NULL",
+            }],
           };
       },
       methods: {
@@ -187,8 +254,8 @@ import axios from 'axios';
               callback(base64); //必须通过回调函数返回，否则无法及时拿到该值
 	          }
           },
-          getCropData() {
-            this.$refs.cropper.getCropData((data) => {
+          getCropData1() {
+            this.$refs.cropper1.getCropData((data) => {
             // 此处进行文件上传
             // console.log(data)
             //var base64 = data
@@ -213,7 +280,7 @@ import axios from 'axios';
                     that.info[i].baike_url = "<i>抱歉没有相关词条</i>"
                   }
                   else{
-                    that.info[i].baike_url = "<a href='"+temp[i].baike_info.baike_url+"' target='_blank'>百科链接</a>"
+                    that.info[i].baike_url = "<a href='"+temp[i].baike_info.baike_url+"' target='_blank'>百度百科链接</a>"
                   }
                   that.info[i].description = temp[i].baike_info.description//.slice(0,100) + "..."
                 }
@@ -224,6 +291,36 @@ import axios from 'axios';
             }
           });
           },
+          getCropData2() {
+            this.$refs.cropper2.getCropData((data) => {
+              var str
+              this.dealImage(data, 500, useimage);
+              let file = document.getElementById('form-image').files[0];
+              var that =this
+              function useimage(data){
+                str = data
+                var params = new URLSearchParams();
+                params.append('base64', str);
+                params.append('name', file.name);
+                // 隐藏原来的b-modal
+                that.$refs['modal-image'].hide()
+                that.isShowLoading=true
+                // console.log(str)
+                axios.post('http://81.69.185.195:8504/api/model', params).then(function (response){
+                  var temp = response.data.data.msg
+                  that.costtime=temp.cost_ms
+                  console.log(temp)
+                  for(let i = 0 ;i < temp.results.length;i++) {
+                    that.info2[i].name=temp.results[i].name
+                    that.info2[i].score=temp.results[i].score.toFixed(3);
+                    that.info2[i].wiki_url= "<a href='https://zh.wikipedia.org/w/index.php?search=" +temp.results[i].name+ "' target='_blank'>维基百科链接</a>"
+                  }
+                  that.isShowLoading = false;
+                  that.$refs['modal-info2'].show()
+                }); 
+            }
+          });
+          }
       },
     }
 </script>
@@ -243,7 +340,11 @@ import axios from 'axios';
   margin-top: 8px;
 }
 .justify-content-center {
-  margin: 20px;
-  height: 300px;
+  margin: 20px 0px 0px 0px;
+  height: 100px;
+}
+#shibie {
+  width: 600px;
+  margin: 0 auto;
 }
 </style>

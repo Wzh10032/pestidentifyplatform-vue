@@ -42,6 +42,11 @@
             ></b-form-input>
             <br>
             <b-form-input
+              v-model="count"
+              placeholder="请输入害虫个数"
+            ></b-form-input>
+            <br>
+            <b-form-input
               v-model="location"
               placeholder="所要修改的经纬度"
             ></b-form-input>
@@ -80,6 +85,7 @@ export default {
             name:"",
             location:"",
             time:"",
+            count:"",
             fields: ['Name', 'Lnglat', 'FindTime'],
             pestdata:{
                 name:"",
@@ -115,6 +121,7 @@ export default {
           params.append('name',this.name)
           params.append('lnglat',this.location)
           params.append('time', this.time)
+          params.append('count',this.count)
           // 2020-1-6 12:34:56
           // that.$refs['bv-modal-example'].hide()
           axios.post('http://81.69.185.195:8504/api/changelocation', params).then(function (response){
